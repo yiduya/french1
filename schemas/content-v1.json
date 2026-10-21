@@ -1,0 +1,3159 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "number",
+      "const": 1
+    },
+    "contentVersion": {
+      "type": "string",
+      "minLength": 1
+    },
+    "language": {
+      "type": "string",
+      "const": "en"
+    },
+    "targetLanguage": {
+      "type": "string",
+      "const": "fr-FR"
+    },
+    "coverage": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "sample",
+            "complete"
+          ]
+        },
+        "expectedTextbookItems": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "lessonId": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+              },
+              "source": {
+                "type": "object",
+                "properties": {
+                  "lessonNumber": {
+                    "type": "integer",
+                    "exclusiveMinimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "exerciseNumber": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "itemNumber": {
+                    "type": "integer",
+                    "exclusiveMinimum": 0,
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": [
+                  "lessonNumber",
+                  "exerciseNumber",
+                  "itemNumber"
+                ],
+                "additionalProperties": false
+              },
+              "sourceReferenceId": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+              }
+            },
+            "required": [
+              "lessonId",
+              "source",
+              "sourceReferenceId"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "mode",
+        "expectedTextbookItems"
+      ],
+      "additionalProperties": false
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "pageCount": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "sha256",
+          "pageCount"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "sourceReferences": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+          },
+          "sourceId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+          },
+          "pdfPage": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          },
+          "printedPage": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "bbox": {
+            "type": "array",
+            "prefixItems": [
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "number",
+                "minimum": 0
+              }
+            ],
+            "items": false,
+            "minItems": 4,
+            "maxItems": 4
+          },
+          "locator": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "id",
+          "sourceId",
+          "pdfPage",
+          "printedPage",
+          "locator"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "courses": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+          },
+          "provenance": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "textbook",
+                  "additional-explanation",
+                  "extra-practice",
+                  "additional-fun-fact"
+                ]
+              },
+              "sourceReferenceIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                }
+              },
+              "reviewStatus": {
+                "type": "string",
+                "enum": [
+                  "needs-review",
+                  "transcription-checked",
+                  "reviewed"
+                ]
+              },
+              "note": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "kind",
+              "sourceReferenceIds",
+              "reviewStatus"
+            ],
+            "additionalProperties": false
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "lessonIds": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "provenance",
+          "title",
+          "lessonIds"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "lessons": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+          },
+          "provenance": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "textbook",
+                  "additional-explanation",
+                  "extra-practice",
+                  "additional-fun-fact"
+                ]
+              },
+              "sourceReferenceIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                }
+              },
+              "reviewStatus": {
+                "type": "string",
+                "enum": [
+                  "needs-review",
+                  "transcription-checked",
+                  "reviewed"
+                ]
+              },
+              "note": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "kind",
+              "sourceReferenceIds",
+              "reviewStatus"
+            ],
+            "additionalProperties": false
+          },
+          "courseId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "lesson",
+              "revision"
+            ]
+          },
+          "originalNumber": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "microLessonIds": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+            }
+          },
+          "vocabulary": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "vocabularyId": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                },
+                "role": {
+                  "type": "string",
+                  "enum": [
+                    "core",
+                    "supporting",
+                    "optional"
+                  ]
+                }
+              },
+              "required": [
+                "vocabularyId",
+                "role"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "id",
+          "provenance",
+          "courseId",
+          "kind",
+          "originalNumber",
+          "title",
+          "microLessonIds",
+          "vocabulary"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "microLessons": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+          },
+          "provenance": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "textbook",
+                  "additional-explanation",
+                  "extra-practice",
+                  "additional-fun-fact"
+                ]
+              },
+              "sourceReferenceIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                }
+              },
+              "reviewStatus": {
+                "type": "string",
+                "enum": [
+                  "needs-review",
+                  "transcription-checked",
+                  "reviewed"
+                ]
+              },
+              "note": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "kind",
+              "sourceReferenceIds",
+              "reviewStatus"
+            ],
+            "additionalProperties": false
+          },
+          "lessonId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "objective": {
+            "type": "string",
+            "minLength": 1
+          },
+          "activityIds": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+            }
+          },
+          "prerequisiteMicroLessonIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "provenance",
+          "lessonId",
+          "title",
+          "objective",
+          "activityIds",
+          "prerequisiteMicroLessonIds"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "activities": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+              },
+              "provenance": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "textbook",
+                      "additional-explanation",
+                      "extra-practice",
+                      "additional-fun-fact"
+                    ]
+                  },
+                  "sourceReferenceIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                    }
+                  },
+                  "reviewStatus": {
+                    "type": "string",
+                    "enum": [
+                      "needs-review",
+                      "transcription-checked",
+                      "reviewed"
+                    ]
+                  },
+                  "note": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "kind",
+                  "sourceReferenceIds",
+                  "reviewStatus"
+                ],
+                "additionalProperties": false
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "kind": {
+                "type": "string",
+                "const": "vocabulary"
+              },
+              "vocabularyIds": {
+                "minItems": 1,
+                "maxItems": 5,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                }
+              }
+            },
+            "required": [
+              "id",
+              "provenance",
+              "title",
+              "kind",
+              "vocabularyIds"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+              },
+              "provenance": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "textbook",
+                      "additional-explanation",
+                      "extra-practice",
+                      "additional-fun-fact"
+                    ]
+                  },
+                  "sourceReferenceIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                    }
+                  },
+                  "reviewStatus": {
+                    "type": "string",
+                    "enum": [
+                      "needs-review",
+                      "transcription-checked",
+                      "reviewed"
+                    ]
+                  },
+                  "note": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "kind",
+                  "sourceReferenceIds",
+                  "reviewStatus"
+                ],
+                "additionalProperties": false
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "kind": {
+                "type": "string",
+                "const": "grammar"
+              },
+              "grammarPointId": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+              }
+            },
+            "required": [
+              "id",
+              "provenance",
+              "title",
+              "kind",
+              "grammarPointId"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+              },
+              "provenance": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "textbook",
+                      "additional-explanation",
+                      "extra-practice",
+                      "additional-fun-fact"
+                    ]
+                  },
+                  "sourceReferenceIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                    }
+                  },
+                  "reviewStatus": {
+                    "type": "string",
+                    "enum": [
+                      "needs-review",
+                      "transcription-checked",
+                      "reviewed"
+                    ]
+                  },
+                  "note": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "kind",
+                  "sourceReferenceIds",
+                  "reviewStatus"
+                ],
+                "additionalProperties": false
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "kind": {
+                "type": "string",
+                "const": "example"
+              },
+              "exampleSentenceId": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+              }
+            },
+            "required": [
+              "id",
+              "provenance",
+              "title",
+              "kind",
+              "exampleSentenceId"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+              },
+              "provenance": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "textbook",
+                      "additional-explanation",
+                      "extra-practice",
+                      "additional-fun-fact"
+                    ]
+                  },
+                  "sourceReferenceIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                    }
+                  },
+                  "reviewStatus": {
+                    "type": "string",
+                    "enum": [
+                      "needs-review",
+                      "transcription-checked",
+                      "reviewed"
+                    ]
+                  },
+                  "note": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "kind",
+                  "sourceReferenceIds",
+                  "reviewStatus"
+                ],
+                "additionalProperties": false
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "kind": {
+                "type": "string",
+                "const": "exercise"
+              },
+              "exerciseId": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+              }
+            },
+            "required": [
+              "id",
+              "provenance",
+              "title",
+              "kind",
+              "exerciseId"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+              },
+              "provenance": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "textbook",
+                      "additional-explanation",
+                      "extra-practice",
+                      "additional-fun-fact"
+                    ]
+                  },
+                  "sourceReferenceIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                    }
+                  },
+                  "reviewStatus": {
+                    "type": "string",
+                    "enum": [
+                      "needs-review",
+                      "transcription-checked",
+                      "reviewed"
+                    ]
+                  },
+                  "note": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "kind",
+                  "sourceReferenceIds",
+                  "reviewStatus"
+                ],
+                "additionalProperties": false
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "kind": {
+                "type": "string",
+                "const": "fun-fact"
+              },
+              "funFactId": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+              }
+            },
+            "required": [
+              "id",
+              "provenance",
+              "title",
+              "kind",
+              "funFactId"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+              },
+              "provenance": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "textbook",
+                      "additional-explanation",
+                      "extra-practice",
+                      "additional-fun-fact"
+                    ]
+                  },
+                  "sourceReferenceIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                    }
+                  },
+                  "reviewStatus": {
+                    "type": "string",
+                    "enum": [
+                      "needs-review",
+                      "transcription-checked",
+                      "reviewed"
+                    ]
+                  },
+                  "note": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "kind",
+                  "sourceReferenceIds",
+                  "reviewStatus"
+                ],
+                "additionalProperties": false
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "kind": {
+                "type": "string",
+                "const": "review"
+              },
+              "vocabularyIds": {
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                }
+              }
+            },
+            "required": [
+              "id",
+              "provenance",
+              "title",
+              "kind",
+              "vocabularyIds"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+              },
+              "provenance": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "textbook",
+                      "additional-explanation",
+                      "extra-practice",
+                      "additional-fun-fact"
+                    ]
+                  },
+                  "sourceReferenceIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                    }
+                  },
+                  "reviewStatus": {
+                    "type": "string",
+                    "enum": [
+                      "needs-review",
+                      "transcription-checked",
+                      "reviewed"
+                    ]
+                  },
+                  "note": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "kind",
+                  "sourceReferenceIds",
+                  "reviewStatus"
+                ],
+                "additionalProperties": false
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "kind": {
+                "type": "string",
+                "const": "discovery"
+              },
+              "body": {
+                "type": "object",
+                "properties": {
+                  "english": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "frenchTextIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                    }
+                  },
+                  "provenance": {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "enum": [
+                          "textbook",
+                          "additional-explanation",
+                          "extra-practice",
+                          "additional-fun-fact"
+                        ]
+                      },
+                      "sourceReferenceIds": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                        }
+                      },
+                      "reviewStatus": {
+                        "type": "string",
+                        "enum": [
+                          "needs-review",
+                          "transcription-checked",
+                          "reviewed"
+                        ]
+                      },
+                      "note": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "sourceReferenceIds",
+                      "reviewStatus"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "english",
+                  "frenchTextIds",
+                  "provenance"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "id",
+              "provenance",
+              "title",
+              "kind",
+              "body"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      }
+    },
+    "vocabulary": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+              },
+              "provenance": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "textbook",
+                      "additional-explanation",
+                      "extra-practice",
+                      "additional-fun-fact"
+                    ]
+                  },
+                  "sourceReferenceIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                    }
+                  },
+                  "reviewStatus": {
+                    "type": "string",
+                    "enum": [
+                      "needs-review",
+                      "transcription-checked",
+                      "reviewed"
+                    ]
+                  },
+                  "note": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "kind",
+                  "sourceReferenceIds",
+                  "reviewStatus"
+                ],
+                "additionalProperties": false
+              },
+              "lexicalKey": {
+                "type": "string",
+                "minLength": 1
+              },
+              "lemma": {
+                "type": "object",
+                "properties": {
+                  "frenchTextId": {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                  }
+                },
+                "required": [
+                  "frenchTextId"
+                ],
+                "additionalProperties": false
+              },
+              "meaning": {
+                "type": "string",
+                "minLength": 1
+              },
+              "ipa": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string",
+                        "const": "pending"
+                      },
+                      "value": {
+                        "type": "null"
+                      },
+                      "reason": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "required": [
+                      "status",
+                      "value",
+                      "reason"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string",
+                        "const": "verified"
+                      },
+                      "value": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "reference": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "verifiedBy": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "verifiedAt": {
+                        "type": "string",
+                        "format": "date",
+                        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))$"
+                      },
+                      "locale": {
+                        "type": "string",
+                        "const": "fr-FR"
+                      }
+                    },
+                    "required": [
+                      "status",
+                      "value",
+                      "reference",
+                      "verifiedBy",
+                      "verifiedAt",
+                      "locale"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              "exampleSentenceIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                }
+              },
+              "relatedVocabularyIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                }
+              },
+              "memoryTips": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "type": "string",
+                      "enum": [
+                        "meaning",
+                        "grammar"
+                      ]
+                    },
+                    "explanation": {
+                      "type": "object",
+                      "properties": {
+                        "english": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "frenchTextIds": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                          }
+                        },
+                        "provenance": {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "type": "string",
+                              "enum": [
+                                "textbook",
+                                "additional-explanation",
+                                "extra-practice",
+                                "additional-fun-fact"
+                              ]
+                            },
+                            "sourceReferenceIds": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                              }
+                            },
+                            "reviewStatus": {
+                              "type": "string",
+                              "enum": [
+                                "needs-review",
+                                "transcription-checked",
+                                "reviewed"
+                              ]
+                            },
+                            "note": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "sourceReferenceIds",
+                            "reviewStatus"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "required": [
+                        "english",
+                        "frenchTextIds",
+                        "provenance"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "explanation"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "partOfSpeech": {
+                "type": "string",
+                "const": "verb"
+              },
+              "verb": {
+                "type": "object",
+                "properties": {
+                  "group": {
+                    "type": "string",
+                    "enum": [
+                      "regular-er",
+                      "regular-ir-finir",
+                      "regular-re",
+                      "irregular",
+                      "unclassified"
+                    ]
+                  },
+                  "conjugations": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "subject": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "tense": {
+                          "type": "string",
+                          "const": "present"
+                        },
+                        "form": {
+                          "type": "object",
+                          "properties": {
+                            "frenchTextId": {
+                              "type": "string",
+                              "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                            }
+                          },
+                          "required": [
+                            "frenchTextId"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "provenance": {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "type": "string",
+                              "enum": [
+                                "textbook",
+                                "additional-explanation",
+                                "extra-practice",
+                                "additional-fun-fact"
+                              ]
+                            },
+                            "sourceReferenceIds": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                              }
+                            },
+                            "reviewStatus": {
+                              "type": "string",
+                              "enum": [
+                                "needs-review",
+                                "transcription-checked",
+                                "reviewed"
+                              ]
+                            },
+                            "note": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "sourceReferenceIds",
+                            "reviewStatus"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "required": [
+                        "subject",
+                        "tense",
+                        "form",
+                        "provenance"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "collocationTextIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                    }
+                  }
+                },
+                "required": [
+                  "group",
+                  "conjugations",
+                  "collocationTextIds"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "id",
+              "provenance",
+              "lexicalKey",
+              "lemma",
+              "meaning",
+              "ipa",
+              "exampleSentenceIds",
+              "relatedVocabularyIds",
+              "memoryTips",
+              "partOfSpeech",
+              "verb"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+              },
+              "provenance": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "textbook",
+                      "additional-explanation",
+                      "extra-practice",
+                      "additional-fun-fact"
+                    ]
+                  },
+                  "sourceReferenceIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                    }
+                  },
+                  "reviewStatus": {
+                    "type": "string",
+                    "enum": [
+                      "needs-review",
+                      "transcription-checked",
+                      "reviewed"
+                    ]
+                  },
+                  "note": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "kind",
+                  "sourceReferenceIds",
+                  "reviewStatus"
+                ],
+                "additionalProperties": false
+              },
+              "lexicalKey": {
+                "type": "string",
+                "minLength": 1
+              },
+              "lemma": {
+                "type": "object",
+                "properties": {
+                  "frenchTextId": {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                  }
+                },
+                "required": [
+                  "frenchTextId"
+                ],
+                "additionalProperties": false
+              },
+              "meaning": {
+                "type": "string",
+                "minLength": 1
+              },
+              "ipa": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string",
+                        "const": "pending"
+                      },
+                      "value": {
+                        "type": "null"
+                      },
+                      "reason": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "required": [
+                      "status",
+                      "value",
+                      "reason"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string",
+                        "const": "verified"
+                      },
+                      "value": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "reference": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "verifiedBy": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "verifiedAt": {
+                        "type": "string",
+                        "format": "date",
+                        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))$"
+                      },
+                      "locale": {
+                        "type": "string",
+                        "const": "fr-FR"
+                      }
+                    },
+                    "required": [
+                      "status",
+                      "value",
+                      "reference",
+                      "verifiedBy",
+                      "verifiedAt",
+                      "locale"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              "exampleSentenceIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                }
+              },
+              "relatedVocabularyIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                }
+              },
+              "memoryTips": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "type": "string",
+                      "enum": [
+                        "meaning",
+                        "grammar"
+                      ]
+                    },
+                    "explanation": {
+                      "type": "object",
+                      "properties": {
+                        "english": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "frenchTextIds": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                          }
+                        },
+                        "provenance": {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "type": "string",
+                              "enum": [
+                                "textbook",
+                                "additional-explanation",
+                                "extra-practice",
+                                "additional-fun-fact"
+                              ]
+                            },
+                            "sourceReferenceIds": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                              }
+                            },
+                            "reviewStatus": {
+                              "type": "string",
+                              "enum": [
+                                "needs-review",
+                                "transcription-checked",
+                                "reviewed"
+                              ]
+                            },
+                            "note": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "sourceReferenceIds",
+                            "reviewStatus"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "required": [
+                        "english",
+                        "frenchTextIds",
+                        "provenance"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "explanation"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "partOfSpeech": {
+                "type": "string",
+                "const": "noun"
+              },
+              "noun": {
+                "type": "object",
+                "properties": {
+                  "articleForm": {
+                    "type": "object",
+                    "properties": {
+                      "frenchTextId": {
+                        "type": "string",
+                        "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                      }
+                    },
+                    "required": [
+                      "frenchTextId"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "gender": {
+                    "type": "string",
+                    "enum": [
+                      "masculine",
+                      "feminine",
+                      "common",
+                      "unknown"
+                    ]
+                  },
+                  "plural": {
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "frenchTextId": {
+                            "type": "string",
+                            "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                          }
+                        },
+                        "required": [
+                          "frenchTextId"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "reviewNote": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "articleForm",
+                  "gender",
+                  "plural"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "id",
+              "provenance",
+              "lexicalKey",
+              "lemma",
+              "meaning",
+              "ipa",
+              "exampleSentenceIds",
+              "relatedVocabularyIds",
+              "memoryTips",
+              "partOfSpeech",
+              "noun"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+              },
+              "provenance": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "textbook",
+                      "additional-explanation",
+                      "extra-practice",
+                      "additional-fun-fact"
+                    ]
+                  },
+                  "sourceReferenceIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                    }
+                  },
+                  "reviewStatus": {
+                    "type": "string",
+                    "enum": [
+                      "needs-review",
+                      "transcription-checked",
+                      "reviewed"
+                    ]
+                  },
+                  "note": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "kind",
+                  "sourceReferenceIds",
+                  "reviewStatus"
+                ],
+                "additionalProperties": false
+              },
+              "lexicalKey": {
+                "type": "string",
+                "minLength": 1
+              },
+              "lemma": {
+                "type": "object",
+                "properties": {
+                  "frenchTextId": {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                  }
+                },
+                "required": [
+                  "frenchTextId"
+                ],
+                "additionalProperties": false
+              },
+              "meaning": {
+                "type": "string",
+                "minLength": 1
+              },
+              "ipa": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string",
+                        "const": "pending"
+                      },
+                      "value": {
+                        "type": "null"
+                      },
+                      "reason": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "required": [
+                      "status",
+                      "value",
+                      "reason"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string",
+                        "const": "verified"
+                      },
+                      "value": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "reference": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "verifiedBy": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "verifiedAt": {
+                        "type": "string",
+                        "format": "date",
+                        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))$"
+                      },
+                      "locale": {
+                        "type": "string",
+                        "const": "fr-FR"
+                      }
+                    },
+                    "required": [
+                      "status",
+                      "value",
+                      "reference",
+                      "verifiedBy",
+                      "verifiedAt",
+                      "locale"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              "exampleSentenceIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                }
+              },
+              "relatedVocabularyIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                }
+              },
+              "memoryTips": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "type": "string",
+                      "enum": [
+                        "meaning",
+                        "grammar"
+                      ]
+                    },
+                    "explanation": {
+                      "type": "object",
+                      "properties": {
+                        "english": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "frenchTextIds": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                          }
+                        },
+                        "provenance": {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "type": "string",
+                              "enum": [
+                                "textbook",
+                                "additional-explanation",
+                                "extra-practice",
+                                "additional-fun-fact"
+                              ]
+                            },
+                            "sourceReferenceIds": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                              }
+                            },
+                            "reviewStatus": {
+                              "type": "string",
+                              "enum": [
+                                "needs-review",
+                                "transcription-checked",
+                                "reviewed"
+                              ]
+                            },
+                            "note": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "sourceReferenceIds",
+                            "reviewStatus"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "required": [
+                        "english",
+                        "frenchTextIds",
+                        "provenance"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "explanation"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "partOfSpeech": {
+                "type": "string",
+                "enum": [
+                  "adjective",
+                  "adverb",
+                  "pronoun",
+                  "preposition",
+                  "conjunction",
+                  "expression",
+                  "other"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "provenance",
+              "lexicalKey",
+              "lemma",
+              "meaning",
+              "ipa",
+              "exampleSentenceIds",
+              "relatedVocabularyIds",
+              "memoryTips",
+              "partOfSpeech"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      }
+    },
+    "frenchTexts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+          },
+          "provenance": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "textbook",
+                  "additional-explanation",
+                  "extra-practice",
+                  "additional-fun-fact"
+                ]
+              },
+              "sourceReferenceIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                }
+              },
+              "reviewStatus": {
+                "type": "string",
+                "enum": [
+                  "needs-review",
+                  "transcription-checked",
+                  "reviewed"
+                ]
+              },
+              "note": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "kind",
+              "sourceReferenceIds",
+              "reviewStatus"
+            ],
+            "additionalProperties": false
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1
+          },
+          "audioAssetId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+          },
+          "forms": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "surface": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "vocabularyId": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                },
+                "grammarLabel": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "verified",
+                    "needs-review"
+                  ]
+                }
+              },
+              "required": [
+                "surface",
+                "vocabularyId",
+                "grammarLabel",
+                "status"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "id",
+          "provenance",
+          "text",
+          "audioAssetId",
+          "forms"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "grammarPoints": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+          },
+          "provenance": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "textbook",
+                  "additional-explanation",
+                  "extra-practice",
+                  "additional-fun-fact"
+                ]
+              },
+              "sourceReferenceIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                }
+              },
+              "reviewStatus": {
+                "type": "string",
+                "enum": [
+                  "needs-review",
+                  "transcription-checked",
+                  "reviewed"
+                ]
+              },
+              "note": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "kind",
+              "sourceReferenceIds",
+              "reviewStatus"
+            ],
+            "additionalProperties": false
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "essential": {
+            "type": "object",
+            "properties": {
+              "english": {
+                "type": "string",
+                "minLength": 1
+              },
+              "frenchTextIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                }
+              },
+              "provenance": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "textbook",
+                      "additional-explanation",
+                      "extra-practice",
+                      "additional-fun-fact"
+                    ]
+                  },
+                  "sourceReferenceIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                    }
+                  },
+                  "reviewStatus": {
+                    "type": "string",
+                    "enum": [
+                      "needs-review",
+                      "transcription-checked",
+                      "reviewed"
+                    ]
+                  },
+                  "note": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "kind",
+                  "sourceReferenceIds",
+                  "reviewStatus"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "english",
+              "frenchTextIds",
+              "provenance"
+            ],
+            "additionalProperties": false
+          },
+          "explanation": {
+            "type": "object",
+            "properties": {
+              "english": {
+                "type": "string",
+                "minLength": 1
+              },
+              "frenchTextIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                }
+              },
+              "provenance": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "textbook",
+                      "additional-explanation",
+                      "extra-practice",
+                      "additional-fun-fact"
+                    ]
+                  },
+                  "sourceReferenceIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                    }
+                  },
+                  "reviewStatus": {
+                    "type": "string",
+                    "enum": [
+                      "needs-review",
+                      "transcription-checked",
+                      "reviewed"
+                    ]
+                  },
+                  "note": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "kind",
+                  "sourceReferenceIds",
+                  "reviewStatus"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "english",
+              "frenchTextIds",
+              "provenance"
+            ],
+            "additionalProperties": false
+          },
+          "deepDive": {
+            "type": "object",
+            "properties": {
+              "english": {
+                "type": "string",
+                "minLength": 1
+              },
+              "frenchTextIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                }
+              },
+              "provenance": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "textbook",
+                      "additional-explanation",
+                      "extra-practice",
+                      "additional-fun-fact"
+                    ]
+                  },
+                  "sourceReferenceIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                    }
+                  },
+                  "reviewStatus": {
+                    "type": "string",
+                    "enum": [
+                      "needs-review",
+                      "transcription-checked",
+                      "reviewed"
+                    ]
+                  },
+                  "note": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "kind",
+                  "sourceReferenceIds",
+                  "reviewStatus"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "english",
+              "frenchTextIds",
+              "provenance"
+            ],
+            "additionalProperties": false
+          },
+          "exampleSentenceIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "provenance",
+          "title",
+          "essential",
+          "exampleSentenceIds"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "exampleSentences": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+          },
+          "provenance": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "textbook",
+                  "additional-explanation",
+                  "extra-practice",
+                  "additional-fun-fact"
+                ]
+              },
+              "sourceReferenceIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                }
+              },
+              "reviewStatus": {
+                "type": "string",
+                "enum": [
+                  "needs-review",
+                  "transcription-checked",
+                  "reviewed"
+                ]
+              },
+              "note": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "kind",
+              "sourceReferenceIds",
+              "reviewStatus"
+            ],
+            "additionalProperties": false
+          },
+          "french": {
+            "type": "object",
+            "properties": {
+              "frenchTextId": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+              }
+            },
+            "required": [
+              "frenchTextId"
+            ],
+            "additionalProperties": false
+          },
+          "translation": {
+            "type": "object",
+            "properties": {
+              "english": {
+                "type": "string",
+                "minLength": 1
+              },
+              "provenance": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "textbook",
+                      "additional-explanation",
+                      "extra-practice",
+                      "additional-fun-fact"
+                    ]
+                  },
+                  "sourceReferenceIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                    }
+                  },
+                  "reviewStatus": {
+                    "type": "string",
+                    "enum": [
+                      "needs-review",
+                      "transcription-checked",
+                      "reviewed"
+                    ]
+                  },
+                  "note": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "kind",
+                  "sourceReferenceIds",
+                  "reviewStatus"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "english",
+              "provenance"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "id",
+          "provenance",
+          "french",
+          "translation"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "exercises": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+          },
+          "provenance": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "textbook",
+                  "additional-explanation",
+                  "extra-practice",
+                  "additional-fun-fact"
+                ]
+              },
+              "sourceReferenceIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                }
+              },
+              "reviewStatus": {
+                "type": "string",
+                "enum": [
+                  "needs-review",
+                  "transcription-checked",
+                  "reviewed"
+                ]
+              },
+              "note": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "kind",
+              "sourceReferenceIds",
+              "reviewStatus"
+            ],
+            "additionalProperties": false
+          },
+          "lessonId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+          },
+          "source": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "lessonNumber": {
+                    "type": "integer",
+                    "exclusiveMinimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "exerciseNumber": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "itemNumber": {
+                    "type": "integer",
+                    "exclusiveMinimum": 0,
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": [
+                  "lessonNumber",
+                  "exerciseNumber",
+                  "itemNumber"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "translation",
+              "true-false",
+              "fill-blank",
+              "multiple-choice",
+              "matching",
+              "conjugation",
+              "sentence-completion",
+              "listening",
+              "open-response"
+            ]
+          },
+          "instruction": {
+            "type": "object",
+            "properties": {
+              "english": {
+                "type": "string",
+                "minLength": 1
+              },
+              "frenchTextIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                }
+              },
+              "provenance": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "textbook",
+                      "additional-explanation",
+                      "extra-practice",
+                      "additional-fun-fact"
+                    ]
+                  },
+                  "sourceReferenceIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                    }
+                  },
+                  "reviewStatus": {
+                    "type": "string",
+                    "enum": [
+                      "needs-review",
+                      "transcription-checked",
+                      "reviewed"
+                    ]
+                  },
+                  "note": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "kind",
+                  "sourceReferenceIds",
+                  "reviewStatus"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "english",
+              "frenchTextIds",
+              "provenance"
+            ],
+            "additionalProperties": false
+          },
+          "prompt": {
+            "type": "object",
+            "properties": {
+              "english": {
+                "type": "string"
+              },
+              "frenchTextIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                }
+              }
+            },
+            "required": [
+              "english",
+              "frenchTextIds"
+            ],
+            "additionalProperties": false
+          },
+          "answerKeyId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+          },
+          "grading": {
+            "type": "string",
+            "enum": [
+              "self-check",
+              "exact-set",
+              "choice"
+            ]
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                },
+                "english": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "frenchTextIds": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                  }
+                }
+              },
+              "required": [
+                "id",
+                "english",
+                "frenchTextIds"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "hints": {
+            "maxItems": 3,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "level": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 3
+                },
+                "body": {
+                  "type": "object",
+                  "properties": {
+                    "english": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "frenchTextIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                      }
+                    },
+                    "provenance": {
+                      "type": "object",
+                      "properties": {
+                        "kind": {
+                          "type": "string",
+                          "enum": [
+                            "textbook",
+                            "additional-explanation",
+                            "extra-practice",
+                            "additional-fun-fact"
+                          ]
+                        },
+                        "sourceReferenceIds": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                          }
+                        },
+                        "reviewStatus": {
+                          "type": "string",
+                          "enum": [
+                            "needs-review",
+                            "transcription-checked",
+                            "reviewed"
+                          ]
+                        },
+                        "note": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "required": [
+                        "kind",
+                        "sourceReferenceIds",
+                        "reviewStatus"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "english",
+                    "frenchTextIds",
+                    "provenance"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "level",
+                "body"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "id",
+          "provenance",
+          "lessonId",
+          "source",
+          "kind",
+          "instruction",
+          "prompt",
+          "answerKeyId",
+          "grading",
+          "hints"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "answerKeys": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+          },
+          "provenance": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "textbook",
+                  "additional-explanation",
+                  "extra-practice",
+                  "additional-fun-fact"
+                ]
+              },
+              "sourceReferenceIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                }
+              },
+              "reviewStatus": {
+                "type": "string",
+                "enum": [
+                  "needs-review",
+                  "transcription-checked",
+                  "reviewed"
+                ]
+              },
+              "note": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "kind",
+              "sourceReferenceIds",
+              "reviewStatus"
+            ],
+            "additionalProperties": false
+          },
+          "exerciseId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+          },
+          "source": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "lessonNumber": {
+                    "type": "integer",
+                    "exclusiveMinimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "exerciseNumber": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "itemNumber": {
+                    "type": "integer",
+                    "exclusiveMinimum": 0,
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": [
+                  "lessonNumber",
+                  "exerciseNumber",
+                  "itemNumber"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "answer": {
+            "type": "object",
+            "properties": {
+              "english": {
+                "type": "string"
+              },
+              "frenchTextIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                }
+              }
+            },
+            "required": [
+              "english",
+              "frenchTextIds"
+            ],
+            "additionalProperties": false
+          },
+          "acceptedFrenchTextIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+            }
+          },
+          "explanation": {
+            "type": "object",
+            "properties": {
+              "english": {
+                "type": "string",
+                "minLength": 1
+              },
+              "frenchTextIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                }
+              },
+              "provenance": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "textbook",
+                      "additional-explanation",
+                      "extra-practice",
+                      "additional-fun-fact"
+                    ]
+                  },
+                  "sourceReferenceIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                    }
+                  },
+                  "reviewStatus": {
+                    "type": "string",
+                    "enum": [
+                      "needs-review",
+                      "transcription-checked",
+                      "reviewed"
+                    ]
+                  },
+                  "note": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "kind",
+                  "sourceReferenceIds",
+                  "reviewStatus"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "english",
+              "frenchTextIds",
+              "provenance"
+            ],
+            "additionalProperties": false
+          },
+          "selectedOptionIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "provenance",
+          "exerciseId",
+          "source",
+          "answer",
+          "acceptedFrenchTextIds"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "funFacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+          },
+          "provenance": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "textbook",
+                  "additional-explanation",
+                  "extra-practice",
+                  "additional-fun-fact"
+                ]
+              },
+              "sourceReferenceIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                }
+              },
+              "reviewStatus": {
+                "type": "string",
+                "enum": [
+                  "needs-review",
+                  "transcription-checked",
+                  "reviewed"
+                ]
+              },
+              "note": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "kind",
+              "sourceReferenceIds",
+              "reviewStatus"
+            ],
+            "additionalProperties": false
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "language",
+              "culture",
+              "memory"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "frenchTextIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+            }
+          },
+          "english": {
+            "type": "string",
+            "minLength": 1
+          },
+          "englishProvenance": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "textbook",
+                  "additional-explanation",
+                  "extra-practice",
+                  "additional-fun-fact"
+                ]
+              },
+              "sourceReferenceIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+                }
+              },
+              "reviewStatus": {
+                "type": "string",
+                "enum": [
+                  "needs-review",
+                  "transcription-checked",
+                  "reviewed"
+                ]
+              },
+              "note": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "kind",
+              "sourceReferenceIds",
+              "reviewStatus"
+            ],
+            "additionalProperties": false
+          },
+          "relatedVocabularyIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+            }
+          },
+          "interactionExerciseId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+          }
+        },
+        "required": [
+          "id",
+          "provenance",
+          "category",
+          "title",
+          "frenchTextIds",
+          "english",
+          "englishProvenance",
+          "relatedVocabularyIds"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "audioAssets": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+              },
+              "kind": {
+                "type": "string",
+                "const": "tts"
+              },
+              "frenchTextId": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+              },
+              "locale": {
+                "type": "string",
+                "const": "fr-FR"
+              },
+              "rates": {
+                "type": "object",
+                "properties": {
+                  "normal": {
+                    "type": "number",
+                    "minimum": 0.5,
+                    "maximum": 2
+                  },
+                  "slow": {
+                    "type": "number",
+                    "minimum": 0.3,
+                    "maximum": 1
+                  }
+                },
+                "required": [
+                  "normal",
+                  "slow"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "frenchTextId",
+              "locale",
+              "rates"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+              },
+              "kind": {
+                "type": "string",
+                "const": "local"
+              },
+              "frenchTextId": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+              },
+              "locale": {
+                "type": "string",
+                "const": "fr-FR"
+              },
+              "path": {
+                "type": "string",
+                "pattern": "^audio\\/[a-zA-Z0-9_./-]+$"
+              },
+              "verification": {
+                "type": "string",
+                "enum": [
+                  "pending",
+                  "verified"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "frenchTextId",
+              "locale",
+              "path",
+              "verification"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "contentVersion",
+    "language",
+    "targetLanguage",
+    "coverage",
+    "sources",
+    "sourceReferences",
+    "courses",
+    "lessons",
+    "microLessons",
+    "activities",
+    "vocabulary",
+    "frenchTexts",
+    "grammarPoints",
+    "exampleSentences",
+    "exercises",
+    "answerKeys",
+    "funFacts",
+    "audioAssets"
+  ],
+  "additionalProperties": false
+}

@@ -27,7 +27,9 @@ jobs:
           test ! -f src/data/prototype.json
           test ! -d inputs/pdf
           test ! -d artifacts
+          test ! -d content/private
       - run: npm ci
+      - run: npm run test:content
       - run: npm run build
         env:
           GITHUB_PAGES: 'true'

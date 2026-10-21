@@ -1,6 +1,6 @@
 # Practice Makes Perfect: Basic French
 
-个人学习项目。当前 PHASE 3 UI 原型已完成，等待界面审查；不是完整学习系统。网站与教学文案英文，教材法语。
+个人学习项目。当前 PHASE 4 内容系统已完成，等待阶段确认；不是完整学习系统。网站与教学文案英文，教材法语。
 
 ## GitHub 公开源码说明
 
@@ -47,3 +47,13 @@ Python 结构检查：`python scripts/check_phase0.py`、`python scripts/check_p
 ### 首次开启 Pages（当前待完成）
 
 GitHub 自动发布构建已通过，但首次创建站点被 GitHub 集成权限拒绝：`Resource not accessible by integration`。仓库管理员需要打开 https://github.com/yiduya/french1/settings/pages ，在 **Build and deployment → Source** 选择 **GitHub Actions**，然后在 Actions → Deploy public UI preview → Run workflow 运行。之后 main 的更新自动发布。当前不能把目标网址当作已发布成功的站点。
+
+## PHASE 4 内容模型与校验
+
+```sh
+npm run test:content
+npm run content:schema
+npm run content:validate -- content/private/lesson8-sample.json
+```
+
+前两项可在公开检出运行；最后一项需要私人样本（不在 GitHub）。有本地 Phase 1 工件时运行 `python scripts/pdf/build_phase4_sample.py` 重建样本。文档：docs/phase4/DATA_MODEL.md、VALIDATION_AND_LOADING.md、TEST_REPORT.md。浏览器开发者检查页：启动后访问 `/?view=content`，选择 v1 内容 JSON；与 Phase 3 prototype.json 不通用。用户数据当前只有格式，无持久化、导入恢复或 SRS。

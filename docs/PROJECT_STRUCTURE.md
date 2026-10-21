@@ -56,3 +56,7 @@ tests/                 # unit/component/e2e
 ## PHASE 3 实际新增
 
 项目根：package.json/锁文件、Vite/TypeScript 配置与 index.html。src/main.tsx（页面原型）、src/components/ui.tsx（共享组件）、src/style.css（设计系统）、src/data/prototype.json（来源样本）。scripts/check_phase3.mjs 用 Playwright 验证交互；docs/phase3 保存规范与结果；artifacts/phase3 保存私人截图。dist 为本地构建输出，不上传。
+
+## PHASE 4 实际新增
+
+`src/content/`：正式模型、验证、加载/查询与开发者检查界面；`src/user-data/`：分离的数据约定；`schemas/`：导出格式；`tests/content/`：合成契约测试；`scripts/validate/`：CLI。`content/private/lesson8-sample.json`：不公开的真实教材样本。`docs/phase4/`：模型、运行与测试说明。

@@ -4,38 +4,33 @@
 
 ## Stage Completed
 
-PHASE 0–2 已获确认；PHASE 3 已完成 UI 原型，等待用户审查。PHASE 4–11 未开始。
+PHASE 0–3 已获确认继续；PHASE 4 已完成，等待用户确认。PHASE 5–11 未开始。GitHub Pages 首次开关仍受集成权限阻塞，未宣称已上线。
 
 ## Implemented
 
-React + TypeScript + Vite + Tailwind CSS 本地原型；统一奶油白/深绿灰/深红设计系统。完成首页、全书目录、17 步地图、词卡、三层语法、原题提示/答案、Fun Fact、复习原型，以及词库/偏好/组件展示。五个代表性学习屏幕使用第 8 课真实样本，不声称是完整课程。
+内容 v1 模型、独立用户数据格式、Zod + JSON Schema、关系校验器、只读查询仓库、原子加载/错误报告、浏览器独立内容检查页面。词汇跨课复用、微课顺序可调整、原题编号查询及来源/新增解释分离。法语片段关联发音配置；IPA 待校验明确为 null。
 
-交互包括页面/步骤导航、地图弹窗与目标查看、词卡切换与会话收藏、解释展开、任意提示跳转、输入/自评切换保留草稿、答案/解释显示、基础浏览器音频试播与错误提示、原文展开、复习揭晓/评分推进、词库搜索、减少动画。
+少量第 8 课真实私有样本：3 词、1 语法点、3 例句、3 原题/答案、1 Fun Fact 摘录、13 法语/音频配置；独立原题清单仍列全 34 题。未提前完成整课或完整词汇模块。PHASE 3 样本保留，正式 v1 内容通过新的加载模块读取。
 
 ## Files Changed
 
-package.json / package-lock.json / tsconfig.json / vite.config.ts / index.html；src/main.tsx、src/components/ui.tsx、src/style.css、src/data/prototype.json；scripts/check_phase3.mjs；docs/phase3 设计规范/测试报告与阶段归档；README、ROADMAP、DECISIONS、PROJECT_STRUCTURE、本记录。
+src/content/schema.ts、validate.ts、load.ts、ContentInspector.tsx；src/user-data/schema.ts；schemas/content-v1.json 和 user-data-v1.json；scripts/validate/、scripts/pdf/build_phase4_sample.py、scripts/check_phase4_sample.py、scripts/check_phase4_ui.mjs；tests/content/；src/data/prototype-copy.ts 与原型入口；docs/phase4/；依赖/锁文件、CI、README、决策/路线/结构及本进度。
+
+真实教材样本 content/private/lesson8-sample.json 与 artifacts 检查截图不公开提交。公开源码干净检出的 32 项测试与构建已通过，代码更新推送至 yiduya/french1。
 
 ## Testing
 
-依赖安装、TypeScript 和生产构建通过。Playwright 在桌面 1440px、平板 768px、手机 390px 检查导航、地图、词卡、语法、习题、Fun Fact、复习、搜索、设置及目录；无页面横向溢出或 JavaScript 异常。截图已生成并视觉检查；修复词卡顺序与例句配对、手机导航裁切等问题。详见 docs/phase3/TEST_REPORT.md。
+32 项内容契约测试 PASS。独立 PDF/初提对照 PASS。浏览器有效读取、错误拒绝并保留旧内容、移动端检查 PASS。PHASE 3 UI 回归 PASS。TypeScript、schema 导出及构建 PASS。真实样本 0 error / 57 warnings（含 31 道未导入题、3 项待核验 IPA）；strict 模式预期拒绝发布就绪声明。详见 docs/phase4/TEST_REPORT.md。
 
 ## How to Verify
 
-`npm ci` 后 `npm run dev -- --port 5173`；在运行机器访问 http://localhost:5173/。`npm run build` 生成 dist。保持服务器运行后执行 `npm run test:ui`。当前云端预览未公开发布，不能把云端 localhost 当作用户电脑网址；可查看 artifacts/phase3 截图或本地运行。
+`npm ci`；`npm run test:content`；`npm run content:validate -- content/private/lesson8-sample.json`。需要私人文件时运行 `python scripts/pdf/build_phase4_sample.py`（依赖本地 Phase 1 工件）。
+启动 `npm run dev -- --port 5173`，在运行机器打开 `http://localhost:5173/?view=content`，选择结构化样本。公开源码不含样本，可独立运行合成测试与构建；不把本机 localhost 当远程网址。
 
 ## Known Issues
 
-IPA 待验证；真实音频听感、完整语音与词形帮助未实现/验证。所有状态仅内存，刷新重置；无 IndexedDB、完整课程逻辑、自动评分、SRS 或备份。完整原题只展示 8.1/3 样本；地图为设计目标预览。未验证读屏器或跨浏览器真实设备。原型数据不是 PHASE 4 正式模型。
+未核验 IPA、新增说明待教学审核、全书覆盖待后续批次。发音配置存在不代表实际音质已验证。单包上限 5 MiB，跨包加载待以后设计。用户数据只有格式，无存储、迁移或调度；没有删除任何历史记录。旧 Phase 3 原型格式与 v1 不通用，检查器明确分开。GitHub Pages 仍需仓库管理员选择 GitHub Actions 作为 Source。
 
 ## Next Stage
 
-等待用户决定是否调整 UI。明确批准后再进入 PHASE 4 内容模型、加载和校验；本次不提前开发。
-
-## GitHub 源码交付补充
-
-应用户要求推送至公开仓库 yiduya/french1，未启用 Pages。排除 PDF、artifacts、来源报告和 src/data/prototype.json。公开源码新增私人原型资料选择页，仅浏览器会话内读取，不上传；不是 PHASE 9 学习记录导入。无教材干净检出构建通过；浏览器验证错误文件拒绝、正确私人文件打开原型通过。仍停留 PHASE 3。
-
-## GitHub Pages 发布尝试
-
-用户授权启用 Pages。已提交自动发布工作流与 /french1/ 生产资源路径。GitHub 云端私有数据检查、npm ci、生产构建均通过；首次创建 Pages 站点失败：Resource not accessible by integration。当前 GitHub 集成不能开启 Pages 设置，尚无已发布站点。用户需在仓库 Settings → Pages → Build and deployment → Source 选择 GitHub Actions，然后重新运行工作流。不是代码构建错误，未进入下一开发阶段。
+用户确认后进入 PHASE 5：按获批教学顺序实现第 8 课完整词汇学习模块及完整词汇数据；本次停止，不提前开发。

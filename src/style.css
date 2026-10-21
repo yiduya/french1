@@ -4,3 +4,5 @@
 #page-title:focus{outline:none}
 .eyebrow{color:#59664f}.nav-caption{color:#626d59}.tag{color:#4e5d42}
 @media(max-width:760px){.sidebar nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));overflow:visible;gap:3px}.sidebar nav .nav{flex-direction:column;white-space:normal;justify-content:center;text-align:center;font-size:10px;gap:4px;padding:8px 3px;min-height:54px}.sidebar nav .nav svg{width:18px}}
+
+.validation-issues{padding-left:20px;overflow-wrap:anywhere}.content-entry{border-bottom:1px solid var(--line);padding:15px 0}.content-entry p{margin:6px 0}

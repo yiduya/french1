@@ -9,9 +9,9 @@ __pycache__/
 inputs/**
 !inputs/**/
 !inputs/**/.gitkeep
-content/
+/content/
 artifacts/
-user-data/
+/user-data/
 backups/
 *.pdf
 *.PDF
