@@ -1,0 +1,22 @@
+node_modules/
+dist/
+.venv/
+__pycache__/
+*.pyc
+.env
+.env.*
+!.env.example
+inputs/**
+!inputs/**/
+!inputs/**/.gitkeep
+content/
+artifacts/
+user-data/
+backups/
+*.pdf
+*.PDF
+
+# Private textbook-derived prototype fixture and source reports
+src/data/prototype.json
+docs/phase1/
+docs/phase2/
