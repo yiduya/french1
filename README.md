@@ -43,3 +43,7 @@ CHROMIUM_PATH=/usr/bin/chromium npm run test:ui
 原教材与抽取工件放在 inputs/ 和 artifacts/，被 Git 忽略；这些私人文件需另行备份。src/data/prototype.json 和 dist 也含私人教材样本，不得公开发布或重新分发。本次没有注册站点或上传部署。
 
 Python 结构检查：`python scripts/check_phase0.py`、`python scripts/check_phase1.py`、`python scripts/check_phase2.py`，需要 PyMuPDF 和原 PDF/工件。提取脚本及人工表格依赖见阶段文档。
+
+### 首次开启 Pages（当前待完成）
+
+GitHub 自动发布构建已通过，但首次创建站点被 GitHub 集成权限拒绝：`Resource not accessible by integration`。仓库管理员需要打开 https://github.com/yiduya/french1/settings/pages ，在 **Build and deployment → Source** 选择 **GitHub Actions**，然后在 Actions → Deploy public UI preview → Run workflow 运行。之后 main 的更新自动发布。当前不能把目标网址当作已发布成功的站点。

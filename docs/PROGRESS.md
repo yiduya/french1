@@ -35,3 +35,7 @@ IPA 待验证；真实音频听感、完整语音与词形帮助未实现/验证
 ## GitHub 源码交付补充
 
 应用户要求推送至公开仓库 yiduya/french1，未启用 Pages。排除 PDF、artifacts、来源报告和 src/data/prototype.json。公开源码新增私人原型资料选择页，仅浏览器会话内读取，不上传；不是 PHASE 9 学习记录导入。无教材干净检出构建通过；浏览器验证错误文件拒绝、正确私人文件打开原型通过。仍停留 PHASE 3。
+
+## GitHub Pages 发布尝试
+
+用户授权启用 Pages。已提交自动发布工作流与 /french1/ 生产资源路径。GitHub 云端私有数据检查、npm ci、生产构建均通过；首次创建 Pages 站点失败：Resource not accessible by integration。当前 GitHub 集成不能开启 Pages 设置，尚无已发布站点。用户需在仓库 Settings → Pages → Build and deployment → Source 选择 GitHub Actions，然后重新运行工作流。不是代码构建错误，未进入下一开发阶段。
